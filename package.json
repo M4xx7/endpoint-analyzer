@@ -1,6 +1,6 @@
 {
   "name": "endpoint-analyzer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool for analyzing JSON API logs and generating interactive HTML reports.",
   "license": "MIT",
   "author": "M4xx7",
