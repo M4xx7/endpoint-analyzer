@@ -1,4 +1,5 @@
 export type ApiLog = {
+    timestamp: string;
     method: string;
     path: string;
     status: number;
@@ -11,19 +12,20 @@ export type Latency = {
     p95: number;
 }
 
-export type EndpointResult = {
+export type Request = {
+    timestamp: string;
+    statusCode: number;
+    duration: number;
+}
+
+export type EndpointStat = {
     method: string;
     route: string;
-    requestCount: number;
     successRate: number;
-    statusCode: Map<number, number>;
+    requests: Request[];
     latency: Latency;
 }
 
-export type Options = {
-    statusDistributionTop: number;
-    leastSuccessfulTop: number;
-    latencyTop: number;
-}
+
 
 

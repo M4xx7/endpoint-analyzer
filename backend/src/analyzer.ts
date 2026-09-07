@@ -1,16 +1,14 @@
-import { ApiLog, EndpointResult, Latency } from "./types";
+import { ApiLog, EndpointStat, Latency, Request } from "./types";
 
 
 
-export function processLogs(logs: ApiLog[]): EndpointResult[] {
+export function processLogs(logs: ApiLog[]): EndpointStat[] {
 
     type Accumulator = {
         method: string;
         route: string;
-        count: number;
+        requests: Request[];
         errorCount: number;
-        statusCode: Record<number, number>;
-        durations: number[];
     }
 
     const statsMap = new Map<string, Accumulator>();
@@ -23,35 +21,32 @@ export function processLogs(logs: ApiLog[]): EndpointResult[] {
             statsMap.set(key, {
                 method: log.method,
                 route: normalizedPath,
-                count: 0,
                 errorCount: 0,
-                statusCode: {},
-                durations: []
+                requests: []
             });
         }
 
         const stat = statsMap.get(key)!;
-        stat.count++;
 
-        if (!stat.statusCode[log.status]) {
-            stat.statusCode[log.status] = 0;
-        }
-        stat.statusCode[log.status]++;
-        stat.durations.push(log.duration);
+
+        stat.requests.push({
+            timestamp: log.timestamp,
+            statusCode: log.status,
+            duration: log.duration
+        })
 
         if (isErrorStatus(log.status)) stat.errorCount++;
     }
 
-    const results: EndpointResult[] = [];
+    const results: EndpointStat[] = [];
 
     for (const stat of statsMap.values()) {
         results.push({
             method: stat.method,
             route: stat.route,
-            requestCount: stat.count,
-            successRate: getSuccessRate(stat.count, stat.errorCount),
-            statusCode: getSortedStatusCodes(stat.statusCode),
-            latency: getLatencyMetric(stat.durations)
+            successRate: getSuccessRate(stat.requests.length, stat.errorCount),
+            requests: stat.requests,
+            latency: getLatencyMetric(stat.requests.map(request => request.duration)),
         })
 
     }
@@ -63,23 +58,12 @@ function normalizePath(path: string): string {
     return path.replace(/\d+/g, ":id");
 }
 
-
 function isErrorStatus(statusCode: number): boolean {
     return statusCode >= 400;
 }
 
-
 function getSuccessRate(totalCount: number, errorCount: number): number {
     return totalCount === 0 ? 0 : 100 - ((errorCount * 100) / totalCount);
-}
-
-function getSortedStatusCodes(statusCode: Record<number, number>): Map<number, number> {
-    const sortedArray = Object.entries(statusCode).sort(([, countA], [, countB]) => {
-        return countA - countB
-    });
-    return new Map(
-        sortedArray.map(([statusCodeString, count]) => [Number(statusCodeString), count])
-    );
 }
 
 function getLatencyMetric(durations: number[]): Latency {

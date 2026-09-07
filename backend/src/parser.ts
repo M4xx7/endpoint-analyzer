@@ -34,6 +34,7 @@ function isValidApiLog(data: any): data is ApiLog {
     return (
         data !== null &&
         typeof data === 'object' &&
+        typeof data.timestamp === 'string' &&
         typeof data.method === 'string' &&
         typeof data.path === 'string' &&
         typeof data.status === 'number' &&
