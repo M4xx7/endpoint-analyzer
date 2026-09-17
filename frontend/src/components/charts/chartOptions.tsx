@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 
 import type { ChartOptions } from "chart.js";
-import type { Request } from "../../../types";
+import type { Request } from "../../../../types";
 
 ChartJS.register(
     CategoryScale,
@@ -45,6 +45,18 @@ export const options: ChartOptions<'line'> = {
             cornerRadius: 8,
             displayColors: false,
             callbacks: {
+                title: (tooltipItems) => {
+                    const timestamp = tooltipItems[0].label;
+                    const date = new Date(timestamp);
+                 
+                    const time = date.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit"
+                    });
+
+                    return `${time}`;
+                },
                 label: (context) => `${context.parsed.y} ms`,
             },
         },
@@ -55,6 +67,17 @@ export const options: ChartOptions<'line'> = {
             ticks: {
                 maxTicksLimit: 8,
                 color: "#6b7280",
+                maxRotation: 0,
+
+                callback: function (val) {
+                    const timestamp = this.getLabelForValue(val as number);
+                    const date = new Date(timestamp);
+
+                    const day = date.getDate().toString().padStart(2, "0");
+                    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+
+                    return `${day}.${month}`;
+                },
             },
         },
         y: {

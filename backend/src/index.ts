@@ -7,11 +7,6 @@ const app = express();
 const PORT = 3000;
 
 
-// TODO
-
-// Latency over time graph
-// Requests over time
-// Failure rate over time
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));

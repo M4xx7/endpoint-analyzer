@@ -4,13 +4,7 @@ import { options } from "./chartOptions";
 
 export function LatencyChart({ data }: Props) {
   const chartData = {
-    labels: data.map((point) =>
-      new Date(point.timestamp).toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      })
-    ),
+    labels: data.map((point) => point.timestamp),
     datasets: [
       {
         label: "Latency",
@@ -30,7 +24,7 @@ export function LatencyChart({ data }: Props) {
   };
 
   return (
-    <div className="chart-container">
+    <div className="chart-container" style={{ height: "300px" }}>
       <Line data={chartData} options={options} />
     </div>
   );

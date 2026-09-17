@@ -6,10 +6,10 @@ export type ApiLog = {
     duration: number;
 }
 
-export type Latency = {
-    max: number;
-    median: number;
-    p95: number;
+export type EndpointData = {
+    method: string;
+    route: string;
+    requests: Request[];
 }
 
 export type Request = {
@@ -18,13 +18,20 @@ export type Request = {
     duration: number;
 }
 
-export type EndpointStat = {
-    method: string;
-    route: string;
-    successRate: number;
-    requests: Request[];
+export type EndpointMetrics = {
     latency: Latency;
+    successRate: number;
+    requestCount: number;
 }
+
+export type Latency = {
+    max: number;
+    median: number;
+    p95: number;
+}
+
+
+
 
 
 

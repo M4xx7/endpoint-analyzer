@@ -3,7 +3,6 @@ import type { Props } from "./chartOptions";
 import { options } from "./chartOptions";
 
 export function StatusCodeChart({ data }: Props) {
-    // Get all status codes that occur in the data
     const statusCodes = Array.from(
         new Set(data.map((req) => req.statusCode))
     ).sort((a, b) => a - b);
@@ -11,10 +10,9 @@ export function StatusCodeChart({ data }: Props) {
     const requestCounts: Record<string, Record<number, number>> = {};
 
     data.forEach((req) => {
-        const timeKey = new Date(req.timestamp).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-        });
+        const date = new Date(req.timestamp);
+        date.setSeconds(0, 0);
+        const timeKey = date.toISOString();
 
         if (!requestCounts[timeKey]) {
             requestCounts[timeKey] = {};
@@ -24,10 +22,11 @@ export function StatusCodeChart({ data }: Props) {
             (requestCounts[timeKey][req.statusCode] || 0) + 1;
     });
 
-    const labels = Object.keys(requestCounts);
+    const labels = Object.keys(requestCounts).sort(
+        (a, b) => new Date(a).getTime() - new Date(b).getTime()
+    );
 
     const datasets = statusCodes.map((status) => {
-
         const colors = getStatusColor(status);
 
         return {
@@ -54,8 +53,9 @@ export function StatusCodeChart({ data }: Props) {
 
             tooltip: {
                 ...options.plugins?.tooltip,
-
                 callbacks: {
+                    ...options.plugins?.tooltip?.callbacks,
+
                     label: (context: any) =>
                         `Status ${context.dataset.label}: ${context.parsed.y} requests`,
                 },
@@ -64,6 +64,9 @@ export function StatusCodeChart({ data }: Props) {
             legend: {
                 display: true,
                 position: "bottom" as const,
+                labels: {
+                    color: "#9ca3af"
+                }
             },
         },
 
@@ -94,10 +97,6 @@ export function StatusCodeChart({ data }: Props) {
         </div>
     );
 }
-
-
-
-
 
 const getStatusColor = (status: number) => {
     if (status >= 200 && status < 300) {
