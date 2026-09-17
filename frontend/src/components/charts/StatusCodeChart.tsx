@@ -1,38 +1,42 @@
 import { Bar } from "react-chartjs-2";
 import type { Props } from "./chartOptions";
-import { options } from "./chartOptions";
+import { chartOptions } from "./chartOptions";
+import { getStatusColor } from "./chartColors";
+
 
 export function StatusCodeChart({ data }: Props) {
-    const statusCodes = Array.from(
-        new Set(data.map((req) => req.statusCode))
-    ).sort((a, b) => a - b);
+    const families = Array.from(
+        new Set(data.map((req) => getStatusFamily(req.statusCode)))
+    ).sort();
 
-    const requestCounts: Record<string, Record<number, number>> = {};
+    const requestCounts: Record<string, Record<string, number>> = {};
 
     data.forEach((req) => {
         const date = new Date(req.timestamp);
         date.setSeconds(0, 0);
         const timeKey = date.toISOString();
+        const family = getStatusFamily(req.statusCode);
 
         if (!requestCounts[timeKey]) {
             requestCounts[timeKey] = {};
         }
 
-        requestCounts[timeKey][req.statusCode] =
-            (requestCounts[timeKey][req.statusCode] || 0) + 1;
+        requestCounts[timeKey][family] =
+            (requestCounts[timeKey][family] || 0) + 1;
     });
 
     const labels = Object.keys(requestCounts).sort(
         (a, b) => new Date(a).getTime() - new Date(b).getTime()
     );
 
-    const datasets = statusCodes.map((status) => {
-        const colors = getStatusColor(status);
+    const datasets = families.map((family) => {
+        const representativeCode = getFamilyRepresentativeCode(family);
+        const colors = getStatusColor(representativeCode);
 
         return {
-            label: status.toString(),
+            label: family,
             data: labels.map(
-                (time) => requestCounts[time][status] || 0
+                (time) => requestCounts[time][family] || 0
             ),
             backgroundColor: colors.background,
             borderColor: colors.border,
@@ -47,15 +51,14 @@ export function StatusCodeChart({ data }: Props) {
     };
 
     const barOptions = {
-        ...options,
+        ...chartOptions,
         plugins: {
-            ...options.plugins,
+            ...chartOptions.plugins,
 
             tooltip: {
-                ...options.plugins?.tooltip,
+                ...chartOptions.plugins?.tooltip,
                 callbacks: {
-                    ...options.plugins?.tooltip?.callbacks,
-
+                    ...(chartOptions.plugins?.tooltip?.callbacks as any),
                     label: (context: any) =>
                         `Status ${context.dataset.label}: ${context.parsed.y} requests`,
                 },
@@ -71,19 +74,19 @@ export function StatusCodeChart({ data }: Props) {
         },
 
         scales: {
-            ...options.scales,
+            ...chartOptions.scales,
 
             x: {
-                ...options.scales?.x,
+                ...chartOptions.scales?.x,
                 stacked: true,
             },
 
             y: {
-                ...options.scales?.y,
+                ...chartOptions.scales?.y,
                 stacked: true,
 
                 ticks: {
-                    ...options.scales?.y?.ticks,
+                    ...(chartOptions.scales?.y?.ticks as any),
                     callback: (value: any) => value,
                     precision: 0,
                 },
@@ -98,37 +101,21 @@ export function StatusCodeChart({ data }: Props) {
     );
 }
 
-const getStatusColor = (status: number) => {
-    if (status >= 200 && status < 300) {
-        return {
-            background: "rgba(34, 197, 94, 0.75)",
-            border: "rgb(34, 197, 94)",
-        };
-    }
+const getStatusFamily = (status: number): string => {
+    if (status >= 200 && status < 300) return "2xx";
+    if (status >= 300 && status < 400) return "3xx";
+    if (status >= 400 && status < 500) return "4xx";
+    if (status >= 500) return "5xx";
+    return "Other";
+};
 
-    if (status >= 300 && status < 400) {
-        return {
-            background: "rgba(234, 179, 8, 0.75)",
-            border: "rgb(234, 179, 8)",
-        };
-    }
 
-    if (status >= 400 && status < 500) {
-        return {
-            background: "rgba(249, 115, 22, 0.75)",
-            border: "rgb(249, 115, 22)",
-        };
+const getFamilyRepresentativeCode = (family: string): number => {
+    switch (family) {
+        case "2xx": return 200;
+        case "3xx": return 300;
+        case "4xx": return 400;
+        case "5xx": return 500;
+        default: return 0;
     }
-
-    if (status >= 500) {
-        return {
-            background: "rgba(239, 68, 68, 0.75)",
-            border: "rgb(239, 68, 68)",
-        };
-    }
-
-    return {
-        background: "rgba(156, 163, 175, 0.75)",
-        border: "rgb(156, 163, 175)",
-    };
 };

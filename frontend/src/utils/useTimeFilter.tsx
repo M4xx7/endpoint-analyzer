@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { Request } from "../../../../types";
+import type { Request } from "../../../types";
 
 export type TimeRange = "1H" | "8H" | "1D" | "1W" | "ALL";
 

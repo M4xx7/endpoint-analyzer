@@ -1,6 +1,7 @@
 import { Line } from "react-chartjs-2";
 import type { Props } from "./chartOptions";
-import { options } from "./chartOptions";
+import { chartOptions } from "./chartOptions";
+import { CHART_THEME } from "../charts/chartColors";
 
 export function LatencyChart({ data }: Props) {
   const chartData = {
@@ -9,23 +10,23 @@ export function LatencyChart({ data }: Props) {
       {
         label: "Latency",
         data: data.map((point) => point.duration),
-        borderColor: "rgb(99, 102, 241)",
-        backgroundColor: "rgba(99, 102, 241, 0.1)",
+        borderColor: CHART_THEME.latencyLine.borderColor,
+        backgroundColor: CHART_THEME.latencyLine.backgroundColor,
         borderWidth: 2,
         tension: 0.4,
         fill: true,
         pointRadius: 0,
         pointHoverRadius: 6,
-        pointHoverBackgroundColor: "rgb(99, 102, 241)",
-        pointHoverBorderColor: "#fff",
+        pointHoverBackgroundColor: CHART_THEME.latencyLine.hoverDotBg,
+        pointHoverBorderColor: CHART_THEME.latencyLine.hoverDotBorder,
         pointHoverBorderWidth: 2,
       },
     ],
   };
 
   return (
-    <div className="chart-container" style={{ height: "300px" }}>
-      <Line data={chartData} options={options} />
+    <div className="chart-container">
+      <Line data={chartData} options={chartOptions} />
     </div>
   );
 }

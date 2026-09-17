@@ -1,4 +1,4 @@
-import { rangeLabels, type TimeRange } from "./useTimeFilter";
+import { rangeLabels, type TimeRange } from "../utils/useTimeFilter";
 
 type Props = {
   timeRange: TimeRange;

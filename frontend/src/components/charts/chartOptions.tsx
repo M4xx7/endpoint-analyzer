@@ -28,9 +28,9 @@ export type Props = {
     data: Request[];
 };
 
-export const options: ChartOptions<'line'> = {
+export const chartOptions: ChartOptions<'line'> = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: false, 
     interaction: {
         mode: "index",
         intersect: false,
@@ -38,24 +38,24 @@ export const options: ChartOptions<'line'> = {
     plugins: {
         legend: { display: false },
         tooltip: {
-            backgroundColor: "rgba(17, 24, 39, 0.9)",
-            titleColor: "#fff",
-            bodyColor: "#e5e7eb",
+            backgroundColor: "#1e1e1e",
+            titleColor: "#ffffff",
+            bodyColor: "#b8bdc9",
             padding: 12,
             cornerRadius: 8,
             displayColors: false,
+            borderColor: "rgba(255, 255, 255, 0.1)",
+            borderWidth: 1,
             callbacks: {
                 title: (tooltipItems) => {
                     const timestamp = tooltipItems[0].label;
                     const date = new Date(timestamp);
                  
-                    const time = date.toLocaleTimeString([], {
+                    return date.toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
                         second: "2-digit"
                     });
-
-                    return `${time}`;
                 },
                 label: (context) => `${context.parsed.y} ms`,
             },
@@ -66,9 +66,9 @@ export const options: ChartOptions<'line'> = {
             grid: { display: false },
             ticks: {
                 maxTicksLimit: 8,
-                color: "#6b7280",
+                color: "#b8bdc9",
+                font: { size: 12 },
                 maxRotation: 0,
-
                 callback: function (val) {
                     const timestamp = this.getLabelForValue(val as number);
                     const date = new Date(timestamp);
@@ -83,9 +83,10 @@ export const options: ChartOptions<'line'> = {
         y: {
             beginAtZero: true,
             border: { display: false },
-            grid: { color: "rgba(0, 0, 0, 0.05)" },
+            grid: { color: "rgba(255, 255, 255, 0.04)" }, 
             ticks: {
-                color: "#6b7280",
+                color: "#b8bdc9",
+                font: { size: 12 },
                 callback: (value) => `${value} ms`,
             },
         },

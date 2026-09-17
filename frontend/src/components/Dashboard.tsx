@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { TimeRangeSelector } from "../components/charts/TimeRangeSelector";
+import { TimeRangeSelector } from "../components/TimeRangeSelector";
 import { LatencyChart } from "../components/charts/LatencyChart";
 import { StatusCodeChart } from "../components/charts/StatusCodeChart";
-import { useFilteredData, type TimeRange } from "../components/charts/useTimeFilter";
+import { useFilteredData, type TimeRange } from "../utils/useTimeFilter";
 import { calculateMetrics } from "../utils/metricsHelper";
 import type { Request } from "../../../types";
 
@@ -78,9 +78,6 @@ export function Dashboard({ requests }: { requests: Request[] }) {
                 </div>
 
                 <div className="w-full md:w-56 shrink-0 sticky top-8 flex flex-col gap-4">
-                    <h3 className="text-gray-400 font-semibold uppercase tracking-wider text-sm mb-2">
-                        Time Range
-                    </h3>
                     <TimeRangeSelector timeRange={timeRange} onChange={setTimeRange} />
                 </div>
 
