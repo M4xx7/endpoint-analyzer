@@ -12,76 +12,81 @@ export function Dashboard({ requests }: { requests: Request[] }) {
     const metrics = calculateMetrics(filteredData);
 
     return (
-        <div className="w-full flex justify-center">
-            
-            <div className="flex flex-col-reverse md:flex-row gap-8 items-start w-full justify-center">
+        <div className="dashboard-wrapper">
+            <div className="dashboard-layout">
 
-                <div className="hidden md:block w-56 shrink-0"></div>
+                <div className="dashboard-spacer"></div>
 
-                <div className="w-full max-w-[1000px] flex flex-col min-w-0">
-
+                {/* Main Dashboard Content Area */}
+                <div className="dashboard-main">
                     {filteredData.length === 0 ? (
-                        <div className="flex items-center justify-center w-full h-[300px]">
-                            <p className="text-gray-400 text-lg font-medium">
+                        <div className="dashboard-empty">
+                            <p className="dashboard-empty-text">
                                 No requests found in the selected time period.
                             </p>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-36 w-full">
-                            <div className="flex flex-col w-full">
-                                <div className="w-full bg-gray-900 rounded-xl border border-gray-800 p-6">
-                                    <h3 className="text-gray-400 mb-4 font-semibold">Latency</h3>
-                                    <div className="w-full h-[300px]">
+                        <div className="dashboard-stack">
+
+                            <div className="dashboard-section">
+                                <div className="dashboard-chart-card">
+                                    <h3 className="dashboard-chart-title">Latency</h3>
+                                    <div className="chart-container">
                                         <LatencyChart data={filteredData} />
                                     </div>
                                 </div>
 
-                                <div className="flex flex-wrap justify-center gap-16 mt-6 px-2">
-                                    <div className="stat-container">
-                                        <div className="stat-name">Median</div>
-                                        <div className="stat-value text-indigo-400">{metrics.latency.median} ms</div>
-                                    </div>
-                                    <div className="stat-container">
-                                        <div className="stat-name">p95</div>
-                                        <div className="stat-value text-indigo-400">{metrics.latency.p95} ms</div>
-                                    </div>
-                                    <div className="stat-container">
-                                        <div className="stat-name">Max</div>
-                                        <div className="stat-value text-indigo-400">{metrics.latency.max} ms</div>
-                                    </div>
+                                <div className="dashboard-stats-row">
+                                    <StatItem label="Median" value={`${metrics.latency.median} ms`} />
+                                    <StatItem label="p95" value={`${metrics.latency.p95} ms`} />
+                                    <StatItem label="Max" value={`${metrics.latency.max} ms`} />
                                 </div>
                             </div>
 
-                            <div className="flex flex-col w-full">
-                                <div className="w-full bg-gray-900 rounded-xl border border-gray-800 p-6">
-                                    <h3 className="text-gray-400 mb-4 font-semibold">Status Codes</h3>
-                                    <div className="w-full h-[300px]">
+                            <div className="dashboard-section">
+                                <div className="dashboard-chart-card">
+                                    <h3 className="dashboard-chart-title">Status Codes</h3>
+                                    <div className="chart-container">
                                         <StatusCodeChart data={filteredData} />
                                     </div>
                                 </div>
 
-                                <div className="flex flex-wrap justify-center gap-16 mt-6 px-2">
-                                    <div className="stat-container">
-                                        <div className="stat-name">Success rate</div>
-                                        <div className={`stat-value ${metrics.successRate < 90 ? 'text-red-400' : 'text-green-400'}`}>
-                                            {metrics.successRate.toFixed(2)} %
-                                        </div>
-                                    </div>
-                                    <div className="stat-container">
-                                        <div className="stat-name">Total Requests</div>
-                                        <div className="stat-value text-gray-200">{metrics.requestCount}</div>
-                                    </div>
+                                <div className="dashboard-stats-row">
+                                    <StatItem
+                                        label="Success rate"
+                                        value={`${metrics.successRate.toFixed(2)} %`}
+                                        valueClassName={metrics.successRate < 90 ? 'text-red-400' : 'text-green-400'}
+                                    />
+                                    <StatItem label="Total Requests" value={metrics.requestCount} valueClassName="text-gray-200" />
                                 </div>
                             </div>
+
                         </div>
                     )}
                 </div>
 
-                <div className="w-full md:w-56 shrink-0 sticky top-8 flex flex-col gap-4">
+                <div className="dashboard-sidebar">
                     <TimeRangeSelector timeRange={timeRange} onChange={setTimeRange} />
                 </div>
 
             </div>
+        </div>
+    );
+}
+
+function StatItem({
+    label,
+    value,
+    valueClassName = "text-indigo-400"
+}: {
+    label: string;
+    value: string | number;
+    valueClassName?: string
+}) {
+    return (
+        <div className="stat-container">
+            <div className="stat-name">{label}</div>
+            <div className={`stat-value ${valueClassName}`}>{value}</div>
         </div>
     );
 }

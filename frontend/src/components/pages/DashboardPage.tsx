@@ -9,7 +9,7 @@ type Tab = "OVERVIEW" | "ENDPOINT";
 export function DashboardPage() {
     const { results, setResults } = useData();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<Tab>("ENDPOINT");
+    const [activeTab, setActiveTab] = useState<Tab>("OVERVIEW");
 
     useEffect(() => {
         if (!results) {
@@ -39,7 +39,7 @@ export function DashboardPage() {
                     <span className="hidden sm:inline font-medium">back</span>
                 </button>
 
-                <div className="relative flex border-b border-gray-800">
+                <div className="relative flex ">
                     <button
                         onClick={() => setActiveTab("OVERVIEW")}
                         className={`w-48 pb-3 font-medium transition-colors z-10 ${activeTab === "OVERVIEW" ? "text-white" : "text-gray-400 hover:text-gray-200"
@@ -56,7 +56,7 @@ export function DashboardPage() {
                         Endpoints
                     </button>
 
-                    <div className={`absolute bottom-0 left-0 w-48 h-[2px] bg-indigo-500 transition-transform duration-300 ${activeTab === "OVERVIEW" ? "translate-x-0" : "translate-x-full"
+                    <div className={`absolute bottom-0 left-0 w-48 h-[2px] bg-white transition-transform duration-300 ${activeTab === "OVERVIEW" ? "translate-x-0" : "translate-x-full"
                         }`} />
                 </div>
             </div>

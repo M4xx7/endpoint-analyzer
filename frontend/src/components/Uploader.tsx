@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import type { EndpointData } from "../../../types";
+import { API_ANALYZE } from "../constants/constants";
 
 type Props = {
     onUploadComplete: (data: EndpointData[]) => void;
@@ -46,7 +47,7 @@ export function Uploader({ onUploadComplete }: Props) {
                 .filter((line) => line.trim() !== "")
                 .map((line) => JSON.parse(line));
 
-            const response = await fetch("http://localhost:3000/api/analyze", {
+            const response = await fetch(API_ANALYZE, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(logs),
@@ -70,10 +71,9 @@ export function Uploader({ onUploadComplete }: Props) {
             onDrop={onDrop}
             onClick={() => fileInputRef.current?.click()}
         >
-            <p className="dropText">
-                Drag and drop your <strong>.jsonl</strong> file here
+            <p className="text-sm text-gray-400 font-medium">
+                Drop <span className="text-gray-200 font-semibold">.jsonl</span> or browse
             </p>
-            <p className="subText">or click to browse your files</p>
             <input
                 type="file"
                 accept=".jsonl"

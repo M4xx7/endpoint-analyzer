@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useData } from "../DataContext";
 import { Uploader } from "../Uploader";
+import { Footer } from "../Footer";
 
 export function UploadPage() {
     const { setResults } = useData();
@@ -15,6 +16,7 @@ export function UploadPage() {
         <div className="page-wrapper max-w-7xl mx-auto w-full p-4 flex flex-col items-center justify-center min-h-screen">
             <h1 className="title mb-8 text-white">Endpoint Analyzer</h1>
             <Uploader onUploadComplete={handleUploadComplete} />
+            <Footer />
         </div>
     );
 }

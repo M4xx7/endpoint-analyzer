@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { EndpointData } from "../../../types";
 import { Dashboard } from "../components/Dashboard";
+import { getMethodColor } from "../utils/methodColors";
 
 type Props = {
     results: EndpointData[];
@@ -29,7 +30,7 @@ export function EndpointTab({ results }: Props) {
     );
 
     const routeSuggestions = routes.filter((route) =>
-        route.toLowerCase().startsWith(searchRoute.toLowerCase())
+        route.toLowerCase().includes(searchRoute.toLowerCase())
     );
 
     const selectedResult = results.find(
@@ -38,12 +39,13 @@ export function EndpointTab({ results }: Props) {
 
     return (
         <div className="flex flex-col items-center gap-10 w-full">
-            <div className="search-controls w-full">
+            <div className="search-controls">
                 <div>
                     <div className="relative">
                         <button
                             type="button"
-                            className="method-select flex items-center justify-center gap-3 min-w-[120px]"
+                            className={`method-select ${selectedMethod ? getMethodColor(selectedMethod) : ""
+                                }`}
                             onClick={() => setIsMethodDropdownOpen(!isMethodDropdownOpen)}
                             onBlur={() => setTimeout(() => setIsMethodDropdownOpen(false), 150)}
                         >
@@ -55,7 +57,7 @@ export function EndpointTab({ results }: Props) {
                                 {methods.map((method) => (
                                     <div
                                         key={method}
-                                        className="suggestion-item cursor-pointer p-2 hover:bg-gray-800"
+                                        className="suggestion-item"
                                         onClick={() => {
                                             setSelectedMethod(method);
                                             setIsMethodDropdownOpen(false);
@@ -65,7 +67,9 @@ export function EndpointTab({ results }: Props) {
                                             setSearchRoute(firstRoute ?? "");
                                         }}
                                     >
-                                        {method}
+                                        <span className={`method-badge ${getMethodColor(method)}`}>
+                                            {method}
+                                        </span>
                                     </div>
                                 ))}
                             </div>
@@ -77,7 +81,7 @@ export function EndpointTab({ results }: Props) {
                     <input
                         id="route"
                         type="text"
-                        className="route-input w-full"
+                        className="route-input"
                         value={searchRoute}
                         onChange={(e) => setSearchRoute(e.target.value)}
                         placeholder="/users"
@@ -89,7 +93,7 @@ export function EndpointTab({ results }: Props) {
                                 <div
                                     key={route}
                                     onClick={() => setSearchRoute(route)}
-                                    className="cursor-pointer p-2 hover:bg-gray-800"
+                                    className="suggestion-item"
                                 >
                                     {route}
                                 </div>
