@@ -57,7 +57,7 @@ export function EndpointTab({ results }: Props) {
                                 {methods.map((method) => (
                                     <div
                                         key={method}
-                                        className="suggestion-item"
+                                        className="method-suggestion-item"
                                         onClick={() => {
                                             setSelectedMethod(method);
                                             setIsMethodDropdownOpen(false);
@@ -85,6 +85,10 @@ export function EndpointTab({ results }: Props) {
                         value={searchRoute}
                         onChange={(e) => setSearchRoute(e.target.value)}
                         placeholder="/users"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
                     />
 
                     {searchRoute && routeSuggestions.length > 0 && !selectedResult && (

@@ -24,8 +24,8 @@ export const STATUS_PALETTE = {
 
 export const CHART_THEME = {
     latencyLine: {
-        borderColor: "rgb(255, 238, 88)",       
-        backgroundColor: "rgba(255, 238, 88, 0.07)", 
+        borderColor: "rgb(147, 197, 253)",       
+        backgroundColor: "rgba(147, 196, 253, 0.08)", 
         hoverDotBg: "rgb(255, 255, 255)",          
         hoverDotBorder: "rgb(156, 163, 175)",
     },

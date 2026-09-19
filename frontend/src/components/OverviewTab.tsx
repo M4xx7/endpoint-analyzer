@@ -61,7 +61,7 @@ export function OverviewTab({ results }: Props) {
                                     </span>
                                 </div>
                                 <div className="overview-metric-group">
-                                    <span className="text-red-400">{ep.errorRate.toFixed(1)}%</span>
+                                    <span className="text-red-300 font-medium">{ep.errorRate.toFixed(1)}%</span>
                                     <span className="text-gray-500 text-xs">{ep.count} reqs</span>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@ export function OverviewTab({ results }: Props) {
                                     </span>
                                 </div>
                                 <div className="overview-metric-group">
-                                    <span className="text-yellow-400">{ep.median} ms</span>
+                                    <span className="text-blue-300 font-medium">{ep.median} ms</span>
                                     <span className="text-gray-500 text-xs">{ep.count} reqs</span>
                                 </div>
                             </div>

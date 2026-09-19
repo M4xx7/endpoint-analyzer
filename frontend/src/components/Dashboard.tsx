@@ -17,7 +17,6 @@ export function Dashboard({ requests }: { requests: Request[] }) {
 
                 <div className="dashboard-spacer"></div>
 
-                {/* Main Dashboard Content Area */}
                 <div className="dashboard-main">
                     {filteredData.length === 0 ? (
                         <div className="dashboard-empty">
@@ -55,9 +54,8 @@ export function Dashboard({ requests }: { requests: Request[] }) {
                                     <StatItem
                                         label="Success rate"
                                         value={`${metrics.successRate.toFixed(2)} %`}
-                                        valueClassName={metrics.successRate < 90 ? 'text-red-400' : 'text-green-400'}
                                     />
-                                    <StatItem label="Total Requests" value={metrics.requestCount} valueClassName="text-gray-200" />
+                                    <StatItem label="Total Requests" value={metrics.requestCount} />
                                 </div>
                             </div>
 
@@ -77,16 +75,14 @@ export function Dashboard({ requests }: { requests: Request[] }) {
 function StatItem({
     label,
     value,
-    valueClassName = "text-indigo-400"
 }: {
     label: string;
     value: string | number;
-    valueClassName?: string
 }) {
     return (
         <div className="stat-container">
             <div className="stat-name">{label}</div>
-            <div className={`stat-value ${valueClassName}`}>{value}</div>
+            <div className={`stat-value`}>{value}</div>
         </div>
     );
 }
