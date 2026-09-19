@@ -7,7 +7,7 @@ import { EndpointTab } from "../EndpointTab";
 type Tab = "OVERVIEW" | "ENDPOINT";
 
 export function DashboardPage() {
-    const { results, setResults } = useData();
+    const { results } = useData();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<Tab>("OVERVIEW");
 
