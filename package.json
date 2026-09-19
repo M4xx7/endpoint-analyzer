@@ -1,0 +1,8 @@
+{
+  "name": "endpoint-analyzer-monorepo",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}
