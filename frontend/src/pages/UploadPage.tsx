@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useData } from "../DataContext";
-import { Uploader } from "../Uploader";
-import { Footer } from "../Footer";
+import { useData } from "../components/DataContext";
+import { Uploader } from "../components/Uploader";
+import { Footer } from "../components/Footer";
 
 export function UploadPage() {
     const { setResults } = useData();

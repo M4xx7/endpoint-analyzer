@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import type { EndpointData } from "../../../types";
-import { API_ANALYZE } from "../constants/constants";
+import { API_URL } from "../constants/constants";
 
 type Props = {
     onUploadComplete: (data: EndpointData[]) => void;
@@ -47,7 +47,7 @@ export function Uploader({ onUploadComplete }: Props) {
                 .filter((line) => line.trim() !== "")
                 .map((line) => JSON.parse(line));
 
-            const response = await fetch(API_ANALYZE, {
+            const response = await fetch(`${API_URL}/api/analyze`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(logs),

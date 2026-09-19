@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useData } from "../DataContext";
-import { OverviewTab } from "../OverviewTab";
-import { EndpointTab } from "../EndpointTab";
+import { useData } from "../components/DataContext";
+import { OverviewTab } from "../components/OverviewTab";
+import { EndpointTab } from "../components/EndpointTab";
 
 type Tab = "OVERVIEW" | "ENDPOINT";
 

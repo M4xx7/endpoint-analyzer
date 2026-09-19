@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DataProvider } from "./components/DataContext";
-import { UploadPage } from "./components/pages/UploadPage";
-import { DashboardPage } from "./components/pages/DashboardPage";
+import { UploadPage } from "./pages/UploadPage";
+import { DashboardPage } from "./pages/DashboardPage";
 
 export default function App() {
     return (
