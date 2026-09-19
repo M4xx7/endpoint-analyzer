@@ -1,4 +1,4 @@
-import { ApiLog } from "./types";
+import { ApiLog } from "../../types";
 import fs from "fs";
 
 export function parseLogs(filePath: string): ApiLog[] {
