@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { processLogs } from './analyzer';
-import { ApiLog } from '../../types';
+import { ApiLog } from './types';
 
 const app = express();
 const PORT = 3000;

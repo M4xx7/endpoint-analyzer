@@ -1,4 +1,4 @@
-import { ApiLog, EndpointData, Request } from "../../types";
+import { ApiLog, EndpointData, Request } from "./types";
 
 
 export function processLogs(logs: ApiLog[]): EndpointData[] {

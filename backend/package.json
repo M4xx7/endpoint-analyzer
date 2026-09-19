@@ -13,11 +13,11 @@
     "README.md",
     "LICENSE"
   ],
-  "scripts": {
-    "build": "tsc",
-    "prepare": "npm run build",
-    "test": "vitest"
-  },
+ "scripts": {
+  "build": "cp ../types.ts ./src/types.ts && tsc",
+  "prepare": "npm run build",
+  "test": "vitest"
+},
   "keywords": [
     "cli",
     "logs",
