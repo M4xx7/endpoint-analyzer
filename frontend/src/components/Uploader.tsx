@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import type { EndpointData } from "../../../types";
 import { API_URL } from "../constants/constants";
-import { InfoTooltip } from "./InfoToolTip";
+import { InfoTooltip } from "./InfoTooltip";
 
 type Props = {
     onUploadComplete: (data: EndpointData[]) => void;
