@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import type { EndpointData } from "../../../types";
 import { API_URL } from "../constants/constants";
+import { InfoTooltip } from "./InfoToolTip";
 
 type Props = {
     onUploadComplete: (data: EndpointData[]) => void;
@@ -71,6 +72,11 @@ export function Uploader({ onUploadComplete }: Props) {
             onDrop={onDrop}
             onClick={() => fileInputRef.current?.click()}
         >
+
+            <div className="absolute top-3 right-3">
+                <InfoTooltip />
+            </div>
+
             <p className="text-sm text-gray-400 font-medium">
                 Drop <span className="text-gray-200 font-semibold">.jsonl</span> or browse
             </p>
